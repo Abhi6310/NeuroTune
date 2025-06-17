@@ -94,31 +94,31 @@ Inspired by Brain.fm and Calm, built with neurodivergence in mind
 # Project Structure
 ```bash
 NeuroTune/
-|
+│
 ├── README.md
 ├──.gitignore
 ├── requirements.txt    #For backend dependencies
 ├── pubspec.yaml        #Flutter app setup
-|
+│
 ├── /app
-|   ├── /lib
-|   |   ├── main.dart
-|   |   ├── /screens
-|   |   ├── /widgets
-|   |   ├── /models
-|   |   ├── /services   #API and Auth
-|   |   ├── /audio      #Audio Playback
-|   ├── /assets
-|   |   ├── /images
-|   |   ├── /sounds
+│   ├── /lib
+│   │   ├── main.dart
+│   │   ├── /screens
+│   │   ├── /widgets
+│   │   ├── /models
+│   │   ├── /services   #API and Auth
+│   │   ├── /audio      #Audio Playback
+│   ├── /assets
+│   │   ├── /images
+│   │   ├── /sounds
 │   └── test/
-|
+│
 ├── /api                #FastAPI backend
-|   ├── main.py
-|   ├── config.py
-|   ├── /routes
-|   |   ├── auth.py
-|   |   ├── sessions.py
+│   ├── main.py
+│   ├── config.py
+│   ├── /routes
+│   │   ├── auth.py
+│   │   ├── sessions.py
 │   │   └── feedback.py
 │   ├── /models                 #Pydantic schemas and DB models
 │   ├── /ml
