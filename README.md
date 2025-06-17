@@ -92,6 +92,7 @@ Sample layered soundscapes will be implemented soon. Note: sample music will be 
 Inspired by Brain.fm and Calm, built with neurodivergence in mind
 
 # Project Structure
+```bash
 NeuroTune/
 |
 ├── README.md
@@ -149,5 +150,5 @@ NeuroTune/
     ├── deploy_backend.sh
     ├── generate_dummy_data.py
     └── setup_db.py
-
+```
 -----
