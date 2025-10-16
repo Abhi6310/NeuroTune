@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     #App settings and configs
     model_config = ConfigDict(env_file=".env", env_file_encoding="utf-8", protected_namespaces=('model_',))
 
-    #API configs
+    #API config
     api_title: str = "Neurotune API"
     api_version: str = "1.0.0"
     api_description: str = "Personalized Brain Stimulating API"
