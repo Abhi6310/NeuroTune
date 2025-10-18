@@ -1,0 +1,1 @@
+#queries for auth/session management and audio ops

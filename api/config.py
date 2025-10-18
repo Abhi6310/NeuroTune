@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     #Server
     host: str = "127.0.0.1"
     port: int = 8000
-    debug: bool = False
+    debug: bool = True
     allowed_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
     #Auth
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     #Database config
-    database_url: str = "sqlite:////./neurotune.db"
+    database_url: str = "sqlite+aiosqlite:///./neurotune.db"
 
 #Global settings object
 settings = Settings()

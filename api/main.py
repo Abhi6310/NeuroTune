@@ -6,7 +6,7 @@ import uvicorn
 
 from api.models.schemas import APIResponse
 from api.config import settings
-from api.database import APIResponse
+from api.db.database import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

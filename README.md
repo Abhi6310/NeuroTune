@@ -2,22 +2,22 @@
 **NeuroTune** is a personalized meditation and focus app that adapts music in real-time using audio modulation techniques catered to neurodivergent users.
 
 ------
-## Features 🚀
+## Features
 
-- **Real-Time Adaptive Music Engine** 🎶
+- **Real-Time Adaptive Music Engine** 
   Binaural beats, ambient loops, and isochronic tones that evolve live during sessions.
 
-- **Personalized Focus Recommendations** 🧠
+- **Personalized Focus Recommendations** 
   Lightweight machine learning suggests sessions based on your feedback and neurotype.
 
-- **Neurodiversity-Centered Design** 🧘
+- **Neurodiversity-Centered Design** 
   Minimal, predictable, sensory-friendly interface. Toggle sound layers and visuals.
 
-- **Feedback Loop for Improvement** 📊
+- **Feedback Loop for Improvement** 
   Rate sessions and fine-tune your own audio experience over time.
 
 ------
-# Science 🧪
+# Science 
 **NeuroTune** uses research-backed techniques shown to assist with:
 - ADHD and executive functioning support
 - Cognitive fatigue reduction
@@ -28,7 +28,7 @@ Sources:
 - [Clinical EEG and Neuroscience](https://journals.sagepub.com/home/eeg)
 
 ------
-# Tech Stack 🛠️
+# Tech Stack 
 ### **Frontend**
 - `Flutter` – Cross-platform UI
 - `Flutter_sound` / `Superpowered SDK` – Low-latency audio engine
@@ -47,19 +47,21 @@ Sources:
 - `Pandas`, `NumPy` – Data processing
 
 ------
-## Architecture 🧱
-[Flutter App]
-├──Adaptive UI
-├──Audio Engine
-├──Feedback Collector
-|
-[FastAPI Backend]
-├──Recommender System
-├──Session Analytics
-├──PostgreSQL + S3
-
+## Architecture 
+```bash
+├── [Flutter App]
+│
+├── Adaptive UI
+├── Audio Engine
+├── Feedback Collector
+│
+├── [FastAPI Backend]
+├── Recommender System
+├── Session Analytics
+├── PostgreSQL + S3
+```
 -----
-## Necessary Components 🔧
+## Necessary Components
 - Flutter SDK (`>=3.0.0`)
 - Python 3.9+
 - PostgreSQL 15+
@@ -84,13 +86,6 @@ flutter pub get
 flutter run
 ```
 -----
-## Demo Audio
-Sample layered soundscapes will be implemented soon. Note: sample music will be non-copyright for non-commercial use
-
------
-## Acknowledgements
-Inspired by Brain.fm and Calm, built with neurodivergence in mind
-
 # Project Structure
 ```bash
 NeuroTune/

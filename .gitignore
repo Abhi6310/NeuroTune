@@ -1,5 +1,15 @@
-.env
+#database files
 *.db
-*.db-journal
+*db-journal
+*sqlite
+*sqlite3
+
+#env
+.env
+
+#python env
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
