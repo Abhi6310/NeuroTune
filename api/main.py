@@ -1,12 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 import uvicorn
 
 from api.models.schemas import APIResponse
 from api.config import settings
-from api.db.database import init_db
+from api.db.database import init_db, get_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -49,15 +51,23 @@ async def root():
         }
     )
 
+#Database Connectivity Test
 @app.get("/health", response_model=APIResponse)
-async def health_check():
-    """Health check endpoint"""
+async def health_check(db: AsyncSession = Depends(get_db)):
+    try:
+        #testing database connection
+        result = await db.execute(text("SELECT 1"))
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+    
     return APIResponse(
         success=True,
         message="API health check",
         data={
             "status": "healthy",
-            "version": settings.api_version
+            "version": settings.api_version,
+            "database": db_status
         }
     )
 
