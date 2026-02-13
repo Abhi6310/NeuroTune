@@ -23,6 +23,7 @@ node_modules/
 out/
 dist/
 .turbo/
+docs/
 
 # OS
 .DS_Store
