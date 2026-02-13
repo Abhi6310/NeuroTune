@@ -1,0 +1,91 @@
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from datetime import datetime
+from typing import Optional, Dict, Any, List, Literal
+from enum import Enum
+
+#Enums
+class NeurotypeEnum(str, Enum):
+    ADHD = "ADHD"
+    AUTISM = "Autism"
+    ANXIETY = "Anxiety"
+    DEPRESSION = "Depression"
+    NEUROTYPICAL = "Neurotypical"
+    OTHER = "Other"
+
+class AudioTypeEnum(str, Enum):
+    BINAURAL = "binaural"
+    ISOCHRONIC = "isochronic"
+    WHITE_NOISE = "white_noise"
+    NATURE = "nature"
+    AMBIENT = "ambient"
+
+#Response Schema
+class APIResponse(BaseModel):
+    success: bool
+    message: str
+    data: Optional[Dict[str, Any]] = None
+
+#Error Schema
+class ErrorResponse(BaseModel):
+    success: bool = False
+    error: str
+    details: Optional[str] = None
+
+#User Schemas
+class UserBase(BaseModel):
+    email: EmailStr
+    username: str = Field(..., min_length=3, max_length=50)
+    neurotype: Optional[NeurotypeEnum] = None
+    volume_preference: float = Field(0.5, ge=0.0, le=1.0)
+
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=8)
+
+class UserResponse(UserBase):
+    id: int
+    created_at: datetime
+    last_active: datetime
+    activity: bool
+    class Config:
+        from_attributes = True
+
+#updating user preferences
+class UserPreferencesUpdate(BaseModel):
+    neurotype: Optional[NeurotypeEnum] = None
+    volume_preference: Optional[float] = Field(None, ge=0.0, le=1.0)
+    sensory_preferences: Optional[List[str]] = None
+
+#Audio Track Schemas
+class AudioTrackBase(BaseModel):
+    name: str = Field(..., max_length=100)
+    audio_type: AudioTypeEnum
+    duration: float = Field(..., ge=1)
+    frequency: Optional[float] = Field(None, ge=0, le=1000)
+    bpm: Optional[float] = Field(None, ge=20, le=200)
+
+class AudioTrackResponse(AudioTrackBase):
+    id: int
+    file_path: str
+    tags: Optional[List[str]] = None
+    created_at: datetime
+    activity: bool
+    class Config:
+        from_attributes = True
+
+#LLM schemas
+class ModulationStep(BaseModel):
+    timestamp_sec: float = Field(..., ge=0, description="Seconds from session start")
+    target_bpm: int = Field(..., ge=40, le=200)
+    binaural_freq: float = Field(..., ge=0.5, le=40.0, description="Beat frequency in Hz")
+    ramp_duration_sec: float = Field(..., ge=0, le=300, description="Seconds to transition")
+    layer: Literal["binaural", "isochronic", "ambient"] = "binaural"
+
+class ModulationSchedule(BaseModel):
+    intent: str
+    total_duration_sec: int = Field(..., ge=60, le=7200)
+    steps: List[ModulationStep] = Field(..., min_length=1, max_length=20)
+
+#Session request schema
+class SessionStartRequest(BaseModel):
+    intent: str = Field(..., min_length=1, max_length=100)
+    duration_minutes: int = Field(25, ge=1, le=120)
