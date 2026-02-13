@@ -1,0 +1,92 @@
+import * as Tone from "tone";
+
+interface BinauralState {
+  leftOsc: Tone.Oscillator | null;
+  rightOsc: Tone.Oscillator | null;
+  leftPanner: Tone.Panner | null;
+  rightPanner: Tone.Panner | null;
+  gainNode: Tone.Gain | null;
+  isPlaying: boolean;
+}
+
+const state: BinauralState = {
+  leftOsc: null,
+  rightOsc: null,
+  leftPanner: null,
+  rightPanner: null,
+  gainNode: null,
+  isPlaying: false,
+};
+
+export async function startBinauralBeat(
+  baseFreq: number,
+  beatFreq: number,
+  volume: number = 0.3
+): Promise<void> {
+  // Tone.js requires user gesture to start AudioContext
+  await Tone.start();
+
+  // Stop any existing playback
+  stopAll();
+
+  //Left ear: base frequency
+  //Right ear: base + beat frequency
+  //Brain perceives the difference as the binaural beat
+  const leftFreq = baseFreq;
+  const rightFreq = baseFreq + beatFreq;
+
+  state.gainNode = new Tone.Gain(volume).toDestination();
+
+  state.leftPanner = new Tone.Panner(-1).connect(state.gainNode); // hard left
+  state.rightPanner = new Tone.Panner(1).connect(state.gainNode); // hard right
+
+  state.leftOsc = new Tone.Oscillator(leftFreq, "sine").connect(state.leftPanner);
+  state.rightOsc = new Tone.Oscillator(rightFreq, "sine").connect(state.rightPanner);
+
+  state.leftOsc.start();
+  state.rightOsc.start();
+  state.isPlaying = true;
+}
+
+export function updateBinauralBeat(
+  baseFreq: number,
+  beatFreq: number,
+  rampTimeSec: number = 2
+): void {
+  if (!state.leftOsc || !state.rightOsc) return;
+
+  const now = Tone.now();
+  state.leftOsc.frequency.rampTo(baseFreq, rampTimeSec, now);
+  state.rightOsc.frequency.rampTo(baseFreq + beatFreq, rampTimeSec, now);
+}
+
+export function setVolume(volume: number): void {
+  if (state.gainNode) {
+    state.gainNode.gain.rampTo(volume, 0.1);
+  }
+}
+
+export function stopAll(): void {
+  if (state.leftOsc) {
+    state.leftOsc.stop();
+    state.leftOsc.dispose();
+  }
+  if (state.rightOsc) {
+    state.rightOsc.stop();
+    state.rightOsc.dispose();
+  }
+  if (state.leftPanner) state.leftPanner.dispose();
+  if (state.rightPanner) state.rightPanner.dispose();
+  if (state.gainNode) state.gainNode.dispose();
+
+  state.leftOsc = null;
+  state.rightOsc = null;
+  state.leftPanner = null;
+  state.rightPanner = null;
+  state.gainNode = null;
+  state.isPlaying = false;
+}
+
+export function getIsPlaying(): boolean {
+  return state.isPlaying;
+}
