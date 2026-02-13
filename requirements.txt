@@ -3,5 +3,12 @@ uvicorn[standard]
 pydantic
 pydantic-settings
 sqlalchemy
-aiosqlite
+asyncmy
 email-validator
+transformers
+torch
+accelerate
+librosa
+python-jose[cryptography]
+passlib[bcrypt]
+websockets

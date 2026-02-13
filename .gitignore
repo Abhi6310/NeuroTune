@@ -1,15 +1,44 @@
-#database files
+# Database
 *.db
 *db-journal
-*sqlite
-*sqlite3
+*.sqlite
+*.sqlite3
 
-#env
+# Environment
 .env
 
-#python env
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
+venv/
+.venv/
+*.egg-info/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Audio library (user files, don't track)
+local_library/
+
+# ML models
+*.pkl
+*.pk1
+*.h5
+*.onnx
