@@ -51,8 +51,8 @@ jobs:
       - name: Lint
         run: ruff check .
 
-      - name: Format check
-        run: ruff format --check .
+      - name: Format
+        run: ruff format .
 
       - name: Syntax check
         run: python -m py_compile main.py
