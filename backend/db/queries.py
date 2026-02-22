@@ -1,9 +1,8 @@
 #queries for auth/session management and audio ops
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
 from typing import List, Optional
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 from backend.models.orm import User, AudioTrack
 
