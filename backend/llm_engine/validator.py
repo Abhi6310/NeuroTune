@@ -1,7 +1,6 @@
 import json
 import re
 
-from pydantic import ValidationError
 from backend.models.schemas import ModulationSchedule
 
 
