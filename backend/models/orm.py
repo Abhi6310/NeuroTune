@@ -61,3 +61,37 @@ class Session(Base):
 
     def __repr__(self):
         return f"<Session(intent={self.intent}, duration={self.duration_sec}s)>"
+
+
+#Library model — user-uploaded audio file metadata
+class Library(Base):
+    __tablename__ = "library"
+    id = Column(Integer, primary_key=True, index=True)
+    file_path = Column(String(512), unique=True, nullable=False)
+    filename = Column(String(255), nullable=False)
+    format = Column(String(10), nullable=True)
+    duration_sec = Column(Float, nullable=True)
+    bpm = Column(Float, nullable=True)
+    key_signature = Column(String(10), nullable=True)
+    tags = Column(Text, nullable=True)  # JSON string
+    analyzed_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+    def __repr__(self):
+        return f"<Library(filename={self.filename}, bpm={self.bpm})>"
+
+
+#Prompt model — LLM prompt templates stored in DB
+class Prompt(Base):
+    __tablename__ = "prompts"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), unique=True, nullable=False)
+    template = Column(Text, nullable=False)
+    model = Column(String(100), default="deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
+    version = Column(Integer, default=1)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now())
+
+    def __repr__(self):
+        return f"<Prompt(name={self.name}, version={self.version})>"
