@@ -288,13 +288,13 @@ class PromptQueries:
     @staticmethod
     async def get_active_by_name(db: AsyncSession, name: str) -> Optional[Prompt]:
         result = await db.execute(
-            select(Prompt).where(Prompt.name == name, Prompt.is_active == True)
+            select(Prompt).where(Prompt.name == name, Prompt.is_active)
         )
         return result.scalar_one_or_none()
 
     @staticmethod
     async def list_active(db: AsyncSession) -> List[Prompt]:
         result = await db.execute(
-            select(Prompt).where(Prompt.is_active == True)
+            select(Prompt).where(Prompt.is_active)
         )
         return result.scalars().all()

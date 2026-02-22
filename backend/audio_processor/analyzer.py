@@ -32,6 +32,7 @@ def analyze_track(file_path: str) -> dict:
 
 def _extract_bpm(y: np.ndarray, sr: int) -> Optional[float]:
     try:
+        import librosa
         tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
         # librosa >= 0.10 returns an array
         if hasattr(tempo, "__len__"):

@@ -10,7 +10,7 @@ from backend.db.database import get_db
 from backend.db.queries import UserQueries
 from backend.models.orm import User
 from backend.models.schemas import (
-    APIResponse, UserCreate, LoginRequest, TokenResponse
+    APIResponse, UserCreate, LoginRequest
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])
