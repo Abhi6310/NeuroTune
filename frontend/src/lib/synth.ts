@@ -87,6 +87,14 @@ export function stopAll(): void {
   state.isPlaying = false;
 }
 
+export function connectNode(node: Tone.ToneAudioNode): void {
+  if (state.gainNode) state.gainNode.connect(node);
+}
+
+export function disconnectNode(node: Tone.ToneAudioNode): void {
+  if (state.gainNode) state.gainNode.disconnect(node);
+}
+
 export function getIsPlaying(): boolean {
   return state.isPlaying;
 }
