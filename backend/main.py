@@ -11,6 +11,9 @@ from backend.config import settings
 from backend.db.database import init_db, get_db
 from backend.llm_engine.client import llm_engine
 from backend.routers.sessions import router as sessions_router
+from backend.routers.auth import router as auth_router
+from backend.routers.library import router as library_router
+from backend.routers.llm import router as llm_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -47,8 +50,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#Session routes
+#Routers
 app.include_router(sessions_router)
+app.include_router(auth_router)
+app.include_router(library_router)
+app.include_router(llm_router)
 
 #GET
 @app.get("/", response_model=APIResponse)

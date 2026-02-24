@@ -1,11 +1,14 @@
 import asyncio
 import json
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.db.database import get_db
-from backend.models.orm import Session as SessionModel
-from backend.models.schemas import APIResponse, SessionStartRequest
+from backend.db.queries import SessionQueries
+from backend.models.schemas import (
+    APIResponse, SessionStartRequest, SessionEndRequest,
+    SessionEndResponse, SessionResponse,
+)
 from backend.llm_engine.client import llm_engine
 from backend.config import settings
 
@@ -26,22 +29,59 @@ async def start_session(req: SessionStartRequest, db: AsyncSession = Depends(get
         timeout=settings.llm_timeout_seconds,
     )
 
-    #to DB
-    session_record = SessionModel(
+    session = await SessionQueries.create_session(
+        db,
         intent=req.intent,
         schedule=schedule.model_dump_json(),
         duration_sec=schedule.total_duration_sec,
     )
-    db.add(session_record)
-    await db.flush()
-    await db.refresh(session_record)
 
     return APIResponse(
         success=True,
         message="Session started",
         data={
-            "session_id": session_record.id,
+            "session_id": session.id,
             "schedule": schedule.model_dump(),
+        },
+    )
+
+
+@router.patch("/{session_id}/end", response_model=SessionEndResponse)
+async def end_session(
+    session_id: int,
+    req: SessionEndRequest,
+    db: AsyncSession = Depends(get_db),
+):
+    session = await SessionQueries.end_session(
+        db,
+        session_id=session_id,
+        rating=req.rating,
+        feedback_note=req.feedback_note,
+    )
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    return SessionEndResponse(
+        session_id=session.id,
+        duration_sec=session.duration_sec or 0,
+    )
+
+
+@router.get("/history", response_model=APIResponse)
+async def session_history(
+    user_id: int,
+    limit: int = 20,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db),
+):
+    sessions = await SessionQueries.list_by_user(db, user_id=user_id, limit=limit, offset=offset)
+    return APIResponse(
+        success=True,
+        message="Session history",
+        data={
+            "sessions": [SessionResponse.model_validate(s).model_dump(mode="json") for s in sessions],
+            "limit": limit,
+            "offset": offset,
         },
     )
 
