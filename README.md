@@ -4,7 +4,7 @@ Generate focus and study music tailored to what you're doing, from an AI model t
 
 You pick a focus style, and a local language model composes a binaural-beat session (binaural beats: two slightly offset tones the ear blends into one steady pulse) that plays in your browser and is built to adapt to your feedback over time.
 
-![status: active development](https://img.shields.io/badge/status-active%20development-yellow)
+![status: shipped](https://img.shields.io/badge/status-shipped-brightgreen)
 
 **Demo:** runs locally in a few commands; see [Run, Build, Test](#run-build-test).
 
@@ -16,7 +16,9 @@ You choose a focus style (deep focus, light focus, sleep aid, and more), and SCO
 
 Everything runs locally: an 8B-parameter model on a consumer GPU, with every generated session checked for validity before it plays.
 
-**Status.** The core pipeline runs end to end: pick a style, a local model generates a validated session, and it plays in the browser. In progress: text intent understanding, retrieval of past sessions you rated well, and tighter server-side validation.
+**Status.** Shipped end to end and benchmarked : intent classification, retrieval of past sessions you rated well, server-side schema/range/smoothness validation with a deterministic clamp, and WebSocket streaming, measured on an RTX 3060. 
+
+Remaining: a local-setup guide and demo walkthrough.
 
 ---
 
